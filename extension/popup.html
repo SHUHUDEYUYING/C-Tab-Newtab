@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C-Tab 添加快捷方式</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      width: 340px;
+      height: auto;
+      padding: 14px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f9fafb;
+    }
+    body.dark {
+      background: #1f2937;
+      color: #f9fafb;
+    }
+    .popup-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+    .page-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .page-info.dark {
+      background: #374151;
+      border-color: #4b5563;
+    }
+    .page-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f4f6;
+      color: #6b7280;
+      border-radius: 6px;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .page-icon img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+    .page-details {
+      flex: 1;
+      overflow: hidden;
+    }
+    .page-title {
+      font-weight: 600;
+      font-size: 13px;
+      color: #1f2937;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .page-title.dark {
+      color: #f9fafb;
+    }
+    .page-url {
+      font-size: 11px;
+      color: #6b7280;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .page-url.dark {
+      color: #9ca3af;
+    }
+    .category-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .category-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+    }
+    .category-label.dark {
+      color: #d1d5db;
+    }
+    .category-circles {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .category-circle-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    .category-circle-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .category-circle-item.selected .category-circle-icon i {
+      display: block;
+    }
+    .category-circle-item .category-circle-icon i {
+      display: none;
+      color: white;
+      font-size: 10px;
+    }
+    .category-short-name {
+      font-size: 9px;
+      color: #6b7280;
+      max-width: 50px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+      line-height: 1.2;
+      min-height: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .category-short-name.dark {
+      color: #9ca3af;
+    }
+    .button-group {
+      display: flex;
+    }
+    .add-button {
+      width: 100%;
+      padding: 10px;
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .add-button:hover {
+      background: #2563eb;
+    }
+    .add-button:active {
+      transform: scale(0.98);
+    }
+    .add-button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .message {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      text-align: center;
+    }
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .message.dark.success {
+      background: #166534;
+      color: #dcfce7;
+    }
+    .message.dark.error {
+      background: #991b1b;
+      color: #fee2e2;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup-container">
+    <div class="page-info" id="pageInfo">
+      <div class="page-icon" id="pageIcon">
+        <i class="fa-solid fa-globe"></i>
+      </div>
+      <div class="page-details">
+        <div class="page-title" id="pageTitle">加载中...</div>
+        <div class="page-url" id="pageUrl">...</div>
+      </div>
+    </div>
+
+    <div class="category-section">
+      <label class="category-label" id="categoryLabel">选择分类：</label>
+      <div class="category-circles" id="categoryCircles">
+        <div style="color: #9ca3af; font-size: 12px;">加载中...</div>
+      </div>
+    </div>
+
+    <div id="message" class="message" style="display: none;"></div>
+
+    <div class="button-group">
+      <button class="add-button" id="addButton">添加到 C-Tab</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
