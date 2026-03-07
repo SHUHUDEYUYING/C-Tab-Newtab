@@ -63,7 +63,24 @@ function loadTheme() {
   const theme = localStorage.getItem('theme');
   if (theme === 'dark') {
     document.body.classList.add('dark');
+  } else {
+    document.body.classList.remove('dark');
   }
+}
+
+// 监听主题变化
+function setupThemeListener() {
+  // 监听 localStorage 变化（从其他标签页/新标签页切换主题时）
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'theme') {
+      loadTheme();
+    }
+  });
+
+  // 监听窗口获得焦点时重新检查主题
+  window.addEventListener('focus', () => {
+    loadTheme();
+  });
 }
 
 // 显示消息
@@ -308,6 +325,7 @@ function performAddShortcut(selectedCategoryId) {
 // 初始化
 function init() {
   loadTheme();
+  setupThemeListener();
   getCurrentTabInfo();
   renderCategoryButtons();
 

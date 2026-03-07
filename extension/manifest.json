@@ -1,9 +1,14 @@
 {
   "manifest_version": 3,
   "name": "C-Tab 新标签页",
-  "version": "6.0.2",
-  "description": "C-Tab 新标签页是一款个人开发者推出免费浏览器扩展，为您打造更高效、更个性化的浏览体验。",
+  "version": "7.0.1",
+  "description": "C-Tab 新标签页是一款免费本地标签页，采用简洁优雅的设计，为您打造更高效、更个性化的浏览体验。",
   "permissions": ["storage", "topSites", "tabs"],
+  "host_permissions": [
+    "https://ctabsync.careyzhang.top/*",
+    "https://*/*",
+    "http://*/*"
+  ],
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
