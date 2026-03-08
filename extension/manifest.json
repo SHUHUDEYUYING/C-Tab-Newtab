@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "C-Tab 新标签页",
-  "version": "7.0.1",
+  "version": "7.0.3",
   "description": "C-Tab 新标签页是一款免费本地标签页，采用简洁优雅的设计，为您打造更高效、更个性化的浏览体验。",
   "permissions": ["storage", "topSites", "tabs"],
   "host_permissions": [
