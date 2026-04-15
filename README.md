@@ -1,3 +1,4 @@
+<img width="1920" height="1080" alt="1主页面" src="https://github.com/user-attachments/assets/c5a4181d-2c19-47fd-9e74-d31a7c202501" />
 # C-Tab 新标签页
 
 一个美观、功能丰富的新标签页扩展，支持自定义快捷方式、分类管理、主题切换等功能。
